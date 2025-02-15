@@ -1,0 +1,27 @@
+#Prueba Unitaria para Login
+
+
+import unittest
+
+class AuthSystem:
+    def __init__(self):
+        self.users = {"usuario": "contraseña123"}
+
+    def login(self, username, password):
+        return self.users.get(username) == password
+
+class TestLogin(unittest.TestCase):
+    def setUp(self):
+        self.auth = AuthSystem()
+
+    def test_login_exitoso(self):
+        self.assertTrue(self.auth.login("usuario", "contraseña123"))
+
+    def test_login_fallido(self):
+        self.assertFalse(self.auth.login("usuario", "claveIncorrecta"))
+
+    def test_usuario_no_existe(self):
+        self.assertFalse(self.auth.login("desconocido", "contraseña123"))
+
+if __name__ == "__main__":
+    unittest.main()

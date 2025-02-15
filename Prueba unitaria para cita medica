@@ -1,0 +1,44 @@
+#Prueba Unitaria para Citas Médicas
+
+import unittest
+
+class MedicalAppointments:
+    def __init__(self):
+        self.appointments = {}
+
+    def schedule_appointment(self, patient, date):
+        if date in self.appointments:
+            return False  # Fecha ocupada
+        self.appointments[date] = patient
+        return True
+
+    def cancel_appointment(self, date):
+        return self.appointments.pop(date, None) is not None
+
+    def check_appointment(self, date):
+        return self.appointments.get(date, None)
+
+class TestMedicalAppointments(unittest.TestCase):
+    def setUp(self):
+        self.app = MedicalAppointments()
+
+    def test_agendar_cita(self):
+        self.assertTrue(self.app.schedule_appointment("Juan", "2025-03-15"))
+
+    def test_agendar_cita_fecha_ocupada(self):
+        self.app.schedule_appointment("Juan", "2025-03-15")
+        self.assertFalse(self.app.schedule_appointment("Maria", "2025-03-15"))
+
+    def test_cancelar_cita(self):
+        self.app.schedule_appointment("Juan", "2025-03-15")
+        self.assertTrue(self.app.cancel_appointment("2025-03-15"))
+
+    def test_cancelar_cita_no_existente(self):
+        self.assertFalse(self.app.cancel_appointment("2025-03-15"))
+
+    def test_consultar_cita(self):
+        self.app.schedule_appointment("Juan", "2025-03-15")
+        self.assertEqual(self.app.check_appointment("2025-03-15"), "Juan")
+
+if __name__ == "__main__":
+    unittest.main()
